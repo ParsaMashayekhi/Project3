@@ -1,16 +1,289 @@
-\documentclass{article}
-\usepackage{graphicx} % Required for inserting images
+\documentclass[a4paper]{article}
+\usepackage{blindtext}
+\usepackage{amsmath,amssymb,amsthm,mathtools,hyperref,tikz-cd,mathrsfs,cancel,xcolor,wrapfig}
 
-\title{lino}
-\author{Parsa Mashayekhi}
-\date{May 2024}
+\newcommand{\g}{\gamma}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\A}{\mathscr{A}}
+\newcommand{\B}{\mathscr{B}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\GG}{\mathscr{G}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\la}{\leftarrow}
+\newcommand{\Tr}{\textnormal{Tr}}
+\newcommand{\Lie}{\textnormal{Lie}}
+\newcommand{\GL}{\textnormal{GL}}
+\newcommand{\SL}{\textnormal{SL}}
+\newcommand{\id}{\textnormal{id}}
+\newcommand{\Sym}{\textnormal{Sym}}
+\newcommand{\diag}{\textnormal{diag}}
+\newcommand{\coker}{\textnormal{coker}}
+\newcommand{\im}{\textnormal{im}}
+\newcommand{\End}{\textnormal{End}}
+\newcommand{\Hom}{\textnormal{Hom}}
+\newcommand{\Ext}{\textnormal{Ext}}
+\newcommand{\ad}{\textnormal{ad}}
+\newcommand{\Ad}{\textnormal{Ad}}
+\newcommand{\vol}{\textnormal{vol}}
+\newcommand{\vor}{\textnormal{Vor}}
+\newcommand{\Aut}{\textnormal{Aut}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\renewcommand{\O}{\mathcal{O}}
+\newcommand{\rk}{\textnormal{rk}}
+\newcommand{\del}{\partial}
+\newcommand{\delbar}{\overline{\partial}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{cor}[theorem]{Corollary}
+\newtheorem{conj}{Conjecture}
+\renewcommand{\theconj}{\Alph{conj}}  % numbered A, B, C etc
+
+\theoremstyle{definition}
+\newtheorem{defn}[theorem]{Definition}
+\newtheorem{ex}[theorem]{Example}
+\newtheorem{exs}[theorem]{Examples}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{notn}[theorem]{Notation}
+
+\numberwithin{theorem}{subsection}
+
+
+
+\title{The Donaldson invariants and the blowup formula}
+\author{Brad Wilson and Parsa Mashayekhi}
 
 \begin{document}
-
 \maketitle
 
+\tableofcontents
+
+% say some stuff about the intersection form, what is known and what is not. Some history of the smooth classification problem, donaldson invariants and the development of the blowup formula (FS weren't the first to do it)
 \section{Introduction}
-hello 
-how the fuck do you merge?
-\section{First section}
+
+\section{The Donaldson invariants}
+
+% Basics of ASD connections (instantons) and their moduli space. Deformation complex, dimension, generic smoothness, singularities.
+
+\subsection{The ASD moduli space}
+
+
+
+% Uhlenbeck compactness theorem, ideal instantons, rough construction of the compactification and properties. Try to include one or two examples.
+\subsection{The Uhlenbeck compactification}
+
+%Inspired by her earlier work on harmonic maps, in 19?? Karen Uhlenbeck found that along a sequence of ASD connections, there is always a subsequence where the curvature blows up at a finite set of points. Elsewhere, the connections converge to an ASD connection on a bundle of lower instanton number. This led to the development of the Uhlenbeck compactification of the ASD moduli space, where these limits are added back in. We now define these limiting objects. 
+
+
+Throughout this section, let $E\ra X$ be an $SO(3)$-bundle with $-p_1(E)/4=k\geq 1$ and second Stiefel-Whitney class $w_2(E)=w$. As we saw in the previous section, the moduli space $\M_{w,k}$ of ASD connections on $E$ is noncompact. Inspired by her earlier work on harmonic maps, in 19?? Karen Uhlenbeck showed that every sequence of ASD connections has a subsequence converging to a limiting ASD connection away from a finite set of points. At these points, the curvature ``blows up'' in a particular way. This led to the development of the Uhlenbeck compactification of the ASD moduli space, where appropriate limiting objects are added to form a compact space. 
+\newline
+
+These limiting objects are called \emph{ideal ASD connections}. They are defined as a pair
+$$([A];x_1,\dots,x_l)\in \M_{w,k-l}\times \Sym^l(X),$$
+which keeps track of both the limiting connection $A$ and the points $x_j$ where the curvature blows up. A sequence $[A_n]$ of (gauge equivalence classes of) ASD connections converges weakly to an ideal ASD connection $([A];x_1,\dots,x_l)$ if:
+\begin{itemize}
+    \item There is another $SO(3)$-bundle $E'\ra X$ with $-p_1(E')/4=k'$, $w_2(E')=w$ and a sequence of bundle isomorphisms $\phi_n:E'|_{X\setminus \{x_1,\dots,x_l\}}\ra E|_{X\setminus \{x_1,\dots,x_l\}}$ such that $\phi_l^*(A_n|_{K})$ converges smoothly to $A|_K$ on every compact subsets $K\subset X\setminus\{x_1,\dots,x_l\}$.
+    \item The functions $|F_{A_n}|^2$ converge weakly to $|F_{A}|^2 + 8\pi^2\sum_{i=1}^l \delta_{x_i}$ as measures, where $\delta_{x_i}$ is the point measure at $x_i$ of total mass 1. That is, for every smooth function $f$ on $X$, 
+    \begin{equation}\label{eq:weakconvergence}
+        \lim_{n\ra\infty} \int_X f|F_{A_n}|^2 = \int_X f|F_{A}|^2 + 8\pi^2\sum_{i=1}^l f(x_i).
+    \end{equation}
+    This measure is called the curvature density of the ideal ASD connection.
+\end{itemize}
+
+First note that we are only working up to a gauge transformation, since different choices of gauge can be accounted for by the choice of $\phi_n$. Also note that Equation \ref{eq:weakconvergence} implies that $k\geq k' + l$. This means that some of the energy is lost at the points $x_i$ as the $A_n$ converge (specifically, at least $8\pi^2$ times the multiplicity of $x_i$). The energy loss comes from the phenomenon of ``bubbling'', first discovered by Sacks and Uhlenbeck for harmonic maps, and later adapted to ASD connections. This is where after rescaling in small disks around $x_i$, the connections $A_n$ converge to an ASD connection on $S^4$. This limiting connection is called a bubble, and accounts for the lost energy. We now state Uhlenbeck's compactness theorem, which is crucial for understanding the compactification of the ASD moduli space. 
+
+\begin{theorem}[Uhlenbeck, 19??]
+    Every sequence $[A_n]$ of (gauge equivalence classes of) ASD connections has a subsequence converging weakly to an ideal ASD connection.  
+\end{theorem}
+
+This allows us to construct the compactification. Define the ideal moduli space as
+$$\mathcal{IM}_{w,k} = \coprod_{l=0}^k \M_{w,k-l}\times\Sym^l(X).$$
+It is equipped with the topology where closed sets are those containing all of their limit points under the notion of weak convergence defined above \textcolor{red}{does this make sense?}. The Uhlenbeck compactification of $\M_{w,k}$ is its closure within $\mathcal{IM}_{w,k}$, denoted by $\overline{\M}_{w,k}$. It is important to note that the compactification is not a smooth manifold but rather a stratified space, even though each stratum $\M_{w,k-l}\times\Sym^l(X)$ is smooth. 
+\newline
+
+\textcolor{red}{now briefly discuss fundamental class existence.}
+
+The point of introducing a compactification of the moduli space is to construct an appropriate fundamental class for $\M_{w,k}$. The moduli space $\M_{w,k}$ is orientable as a smooth manifold, with an orientation determined by an orientation of the vector space $H^{2}_+(X;\R)$ and an integral lift $c$ of $w$. Since $\M_{w,k}$ is the top-dimensional stratum of $\overline{\M}_{w,k}$, provided that the next stratum has codimension at least two we obtain a fundamental class $[\overline{\M}_{w,k}]\in H^{2d}(\overline{\M}_{w,k};\Z)$. 
+
+
+
+\subsection{The $\mu$-map}
+
+
+
+Now that we have constructed the $\mu$-map, we want a geometric understanding of its image. 
+
+\begin{theorem}
+    Let $\Sigma\subset X$ be a compact embedded surface and let $N_{\Sigma}$ be a sufficiently small tubular neighborhood. Then for every $k\geq 1$ we can find smooth codimension two submanifolds $V_{\Sigma}^{w,k}\subset \M_{w,k}$ such that:
+    \begin{itemize}
+        \item The submanifolds $V_{\Sigma}^{w,k}$ are Poincare dual to the cohomology classes $\mu([\Sigma])\in H^2(\M_{w,k};\Z)$.
+        \item If $\Sigma_1,\dots,\Sigma_r\subset X$ are transversely intersecting surfaces, then all of the $V_{\Sigma_i}^{w,k}$ intersect transversely. 
+        \item If $[A_n]$ is a sequence of ASD connections in $V_{\Sigma}^{w,k}$ converging to an ideal ASD connection $([A];x_1,\dots,x_l)$, then either $[A]\in V_{\Sigma}^{w,k-l}$ or at least one of the $x_i$ lies in $\Sigma$.
+    \end{itemize}
+\end{theorem}
+
+% Definition of Donaldson invariants. universal bundle, mu-map, virtual fundamental class, extension out of the stable range.
+\subsection{Defining the Donaldson invariants}
+
+Let $P\ra X$ be an $SO(3)$-bundle over a smooth, compact, oriented, simply connected 4-manifold $X$. Such bundles are classified by the Stiefel-Whitney class $w_2(P)\in H^2(X,\Z_2)$ and the Pontryagin class $p_1(P)\in H^4(X,\Z)$. These are related by $c^2\equiv p_1 (\text{mod}\ 4)$, where $c\in H^2(X,\Z)$ is an integral lift of $w_2$. Using the $SO(3)$ gauge group $\GG$, define the $\GG$-equivariant bundle $$\widetilde{\mathcal{P}}=P\times\A^*\ra M\times\A^*,$$
+where the action on the total space is $\phi\cdot(p,A)=(\phi^{-1}(p),\phi^*A)$\footnote{why is this action free?}. There is also a free $SO(3)$ action given by $(p,A)\cdot g = (pg,A)$, commuting with the $\GG$ action. Then taking the quotient results in the \emph{universal $SO(3)$-bundle}:
+$$\U=P\times_{\GG}\A^*\ra X\times\B^*.$$
+This has a first Pontryagin class $p_1(\mathcal{P})\in H^4(X\times \B^*,\Z)$. Since $\widetilde{\U}$ lifts to an $SU(2)$-bundle [ref], this class is divisible by 4\footnote{The lift turns out to be the universal adjoint bundle, $\ad P \times_{\GG}\A^*\simeq \ad \widetilde{\U}$. }. This lets us define the map
+\begin{align*}
+    \mu: H_i(X,\Z) &\ra H^{4-i}(\B^*,\Z)\\
+    x &\mapsto -\frac{1}{4}p_1(\mathcal{P})/x,
+\end{align*}
+where $/$ is the \emph{slant product}. [describe slant product on simplices]. Further restricting to classes on the moduli space of ASD connections $\mathcal{M}_{P}\subset \B^*$ (which is smooth of dimension $d_P$ for a generic metric), we get a map $\mu:H_i(X)\ra H^{4-i}(\mathcal{M}_{P})$. This map extends to the cohomology of the Uhlenbeck compactification $\overline{\mathcal{M}}_{P}$. As we saw in the previous section, the compactification has a fundamental class $[\overline{\mathcal{M}}_{P}]\in H^{d_P}(X,\Z)$ whenever $w_2(P)\neq 0$ or $w_2(P)=0$ and $d_P>\frac{3}{4}(1+b_2^+)$. The fundamental class also depends on an orientation of the moduli space, which is determined by an orientation on the vector space $H^{2,+}(X)$ and the integral lift $c$ of $w_2$. Whenever $[\overline{\mathcal{M}}_{P}]$ is defined, the Donaldson invariant is
+$$D_P:\Sym(H_0(X)\oplus H_2(X))\ra \R$$
+$$D_P(\alpha^a x^b)=\int_{\overline{\mathcal{M}}_{P}}\mu(\alpha)^a\mu(x)^b,$$
+where $\alpha\in H^2(X)$ and $x$ is a generator of $H^0(X)$. This is only non-zero when $a+2b=d_E$. 
+
+
+
+
+
+
+and define the ring
+$$\mathbb{A}(X) = \Sym^*(H_0(X)\oplus H_2(X)).$$
+This is graded so that the component $H_i(X)$ has degree $\frac{1}{2}(4-i)$. Given a class $\xi\in H_2(X,\Z_2)$, the Donaldson invariant will be a 
+polynomial on the vector space $H_0(X)\oplus H_2(X)$
+
+
+Using the adjoint bundle $\ad P$, we can form the $\GG$-equivariant vector bundle $\widetilde{\U}=\A^*\times\ad P$ over $\A^*\times M$. Define the universal bundle $\U\ra \B^*\times M$ as the quotient of $\widetilde{\U}$ by $\GG$, which carries a universal connection which we now construct. The bundle $\widetilde{\U}$ comes with a natural $\GG$-equivariant connection $\widetilde{\nabla}$, defined by the local connection 1-forms
+$$\omega_{(A,x)}(\tau,X)=[A_x(X),-]\in\End(\mathfrak{g}).$$
+There is also the principal $\GG$-bundle $\A^*\times M\ra \B^*\times M$, which carries a natural connection $\alpha\in\Omega^1(\A^*\times M,\Lie(\GG))$ defined by
+$$\alpha_{(A,x)}(\tau,X)=\Delta_A^{-1}d_A^*(\tau),\hspace{5mm}\tau\in T_A\A^*=\Omega^1(M,\ad P),\ X\in T_xM.$$
+On $\ad P$-valued $0$-forms, the Laplacian $\Delta_A$ is invertible since $A$ is an irreducible connection (justify). The connection $\alpha$ defines the horizontal distribution $$H_{(A,x)}=\ker(\alpha_{(A,x)})=\ker(d_A^*)\oplus T_xM.$$
+Now we combine $\widetilde{\nabla}$ and $\alpha$ to get a universal connection on $\U$. Choose a section $s\in\Gamma(\U)$, which lifts to a $\GG$-equivariant section $\widetilde{s}\in\Gamma(\widetilde{\U})$. Choose a vector field $V\in \Gamma(T(\B^*\times M))$, which can be lifted to a horizontal vector field $V^\alpha\in\Gamma(T(\A^*\times M))$ using $\alpha$. Then $\widetilde{\nabla}_{V^\alpha}\widetilde{s}$ is a $\GG$-equivariant section of $\widetilde{\U}$, so it descends to a section of $\U$ which we define to be $\nabla_V s$. The curvature of this connection $\nabla$ decomposes according to the following lemma.
+
+\begin{lemma}
+    curvature
+\end{lemma}
+
+\section{Identities for the Donaldson invariant}
+
+% Write one or two sections explaining gluing ASD connections and moduli spaces on manifolds with ends. This is needed for Ruberman's theorem. Include dimension calculations using the APS index theorem.
+\subsection{ASD moduli spaces on manifolds with non-compact ends?}
+
+\textcolor{red}{Fill out this theorem with a more precise statement and a very rough proof sketch (plus picture)}
+\begin{theorem}\label{LimitingEndTheorem}
+    Let $X$ be a 4-manifold with a single non-compact end modelled on a tube $\R\times N$ for a compact 3-manifold $N$. Then every ASD connection on $X$ has a well-defined limiting flat connection ``at infinity'' on $N$. 
+\end{theorem}
+
+% Prove Ruberman's theorem in detail.
+\subsection{Ruberman's theorem}
+
+\begin{lemma}\label{ASDlinebundle}
+    A complex line bundle $L\ra X$ admits an ASD connection if and only if $c_1(L)\in H^{2,-}(X;\Z)$. This connection is unique up to gauge. 
+\end{lemma}
+
+\textcolor{red}{There is probably a more clear way to phrase this lemma}
+\begin{lemma}\label{ReducibleClassification}
+    Let $E\ra X$ be an $SU(2)$ (resp. $SO(3)$)-bundle. Reducible ASD connections on $E$ with stabilizer $U(1)$ correspond modulo gauge to pairs $\{c,-c\}$ with $c\neq 0\in H^{2}(X;\Z)$ satisfying $c^2=-c_2(E)$ (resp. $c^2=p_1(E)$). In turn, such pairs correspond to splittings $E=L\oplus L^{-1}$ (resp. $E\simeq \R\oplus L$) for a complex line bundle $L\ra X$. 
+\end{lemma}
+
+
+\textcolor{red}{Let's write the proof of Ruberman's theorem for SU(2) bundles first, as in the F-S paper. But once we understand it, we will adapt it to the SO(3) case (the SU(2) case follows by setting c=0).}
+\begin{theorem}\cite{Ruberman}\label{TheoremRuberman}
+Let $\tau \in H_2(X;\Z)$ be the homology class of an embedded $2$-sphere $S$ of self-intersection $-2$. Define
+$$\mathbb{A}_{X}(\tau^{\bot})=\Sym^*(H_0(X)\oplus \langle\tau \rangle^{\bot}),$$
+where 
+$$\langle\tau\rangle^{\perp}=\{\alpha\in H_2(X;\Z)\ |\ \tau.\alpha = 0\}.$$
+Then for any $z\in \mathbb{A}_{X}(\tau^{\bot})$ and $c\in H_{2}(X;\Z)$ such that $c.\tau \equiv 0(mod~2)$ we have
+$$D_{c}(\tau^{2}z)=2D_{c+\tau}(z).$$
+\begin{proof} 
+Let $N$ be a tubular neighborhood of the embedded sphere $S$, so that $X$ splits as $X=X_0\cup N$. This $N$ is a neighborhood of the zero section of the euler number -2 line bundle over $S$, so $\del N\simeq L(2,1)\simeq \R\P^3$. Since ? we have $b_2^+(X_0)>0$, so there are no reducible connections on $X_0$. On the other hand, every class in $H^2(N;\Z)$ comes from a class in $H^2(S;\Z)\simeq \Z$, and all such classes have negative self-intersection because $\tau$ does. Then $b_2^+(N)=0$, and there are reducible connections on $N$. Every line bundle over $N$ is of the form $L^m$ for $m\in\Z$, where $c_1(L)$ is a generator of $H^2(N;\Z)\simeq \Z$. Then by Lemma \ref{ReducibleClassification}, modulo gauge there are unique reducible connections $A_{m}$ on the bundles $L^m\oplus L^{-m}$. 
+
+
+
+\end{proof}
+\end{theorem}
+
+% Introduce other identities needed for getting the blowup formula.
+\subsection{Other identities}
+From now on let $D$ and $\hat{D}$ be Donaldson invariants of $X$ and $\hat{X}=X\#\overline{\C\P}^{2}$ respectively.
+\begin{lemma}\label{SevenIdentities}
+Let $e\in H_{2}(\overline{\C\P}^{2};\Z)\subset H_{2}(\hat{X};\Z)$ be the exceptional class and $c\in H_{2}(X;\Z)$. Then for all $k\geq 0$ and $z\in\mathbb{A}(X)$:
+\begin{enumerate}
+    \item $\hat{D}_{c}(e^{2k+1}z)=0$
+    \item $\hat{D}_{c}(z)=D_{c}(z)$
+    \item $\hat{D}_{c}(e^{2}z)=0$
+    \item $\hat{D}_{c}(e^{4}z)=-2D_{c}(z)$
+    \item $\hat{D}_{c+e}(e^{2k}z)=0$
+    \item $\hat{D}_{c+e}(ez)=D_{c}(z)$
+    \item $\hat{D}_{c+e}(e^{3}z)=-D_{c}(xz)$
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+\textcolor{red}{proof in detail}     
+\end{proof}
+
+\section{Fintushel-Stern's blowup formula}
+The blowup formula is the relation between $D$ and $\hat{D}$.
+\begin{lemma}\label{FirstLemmafortheBlowupFormula}
+Let $\tau, c $ and $z$ be the same as in Theorem \ref{TheoremRuberman}, then:
+\begin{equation}\label{FirstEquationfortheBlowupFormula}
+    D_{c}(\tau^{4}z)=-4D_{c}(\tau^{2}xz)-4D_{c}(z)
+\end{equation}
+\end{lemma}
+\begin{proof}
+$\tau+e$ has self-intersection $-3$ and $(\tau-2e).(\tau+e)=0$ because $\tau.\tau =-2$ and $e.e=-1$. Then by Lemma \ref{SevenIdentities}:
+\begin{align}
+\hat{D}_{c}((\tau-2e)^3(\tau+e)z) &=\hat{D}_{c}((\tau^4+\tau^3(-5e)+\tau^2(6e^2)+\tau(4e^3)-8e^4)z)\notag\\
+ &= \hat{D}_{c}(\tau^4z)-8\hat{D}_{c}(e^4z)\notag\\
+ &= D_{c}(\tau^4z)+16D_{c}(z)\label{line1}
+\end{align} 
+In the other hand by Theorem \ref{TheoremRuberman}, Lemma \ref{SevenIdentities} and Lemma \textcolor{red}{???} we have:
+\begin{align}
+\hat{D}_{c}((\tau-2e)^3(\tau+e)z) &= D_{c}((\tau-2e)^3(\tau+e)z)\notag\\
+&= -D_{c+\tau+e}((\tau-2e)^3z)=-\hat{D}_{c+\tau+e}((\tau-2e)^3z)\notag\\
+&= -\hat{D}_{c+\tau+e}((\tau^3+\tau^2(-6e)+\tau(12e^2)-8e^3)z)\notag\\
+&= 6\hat{D}_{c+\tau+e}(\tau^2ez)+8\hat{D}_{c+\tau+e}(e^3z)\notag\\
+&= 6D_{c+\tau}(\tau^2z)-8D_{c+\tau}(xz)\notag\\
+&= 12D_{c}(z)-4D_{c}(\tau^2xz)\label{line2}
+\end{align}
+and (\ref{FirstEquationfortheBlowupFormula}) follows by (\ref{line1}) and (\ref{line2}).
+\end{proof}
+\begin{theorem}[Blowup Formula]
+The are polynomials $B_{k}(x)$ such that for all $z\in \mathbb{A}(X)$ and $c\in H_{2}(X;\Z)$:
+\begin{equation}\label{line3}
+    \hat{D}(e^{k}z)=D(B_{k}(x)z)
+\end{equation}   
+\end{theorem}
+\begin{proof}
+First of all, by Lemma \ref{SevenIdentities}, $B_{0}=B_{2k+1}\equiv 0$ for all $k\geq 0$. Now we prove $B_{r}$ exists by induction on $r$. So assume that for all $j\leq r$, there is a polynomial $B_{j}(x)$ such that (\ref{line3}) holds for $k=j$. Now define $\overline{X}=X\#2\overline{\C\P}^2$ and $\overline{D}$ be its Donaldson invariants. If $e_{1}$ and $e_{2}$ be exceptional classes of $\overline{X}$, then $(e_{1}-e_{2}).(e_{1}-e_{2})=-2$ and  $(e_{1}-e_{2}).(e_{1}+e_{2})=0$ so by Lemma \ref{FirstLemmafortheBlowupFormula} we have
+\begin{equation*}
+    \overline{D}_{c}((e_1+e_2)^r(e_1-e_2)^4z)=-4\overline{D}_{c}((e_1+e_2)^r(e_1-e_2)^2xz)-4\overline{D}_{c}((e_1+e_2)^rz)
+\end{equation*}
+for all $t\geq 0$. Let $t=k-3$:
+\begin{align*}
+\overline{D}_{c}((e_1+e_2)^r(e_1-e_2)^4z) &=     
+\end{align*}
+\end{proof}
+
+% Use weierstrass function magic to derive the blowup formula
+\subsection{Blowup formula from a differential equation}
+
+
+% Special case of simple type, which gives a nicer formula
+\subsection{Blowup formula for simple type manifolds}
+
+% Hopefully there is some nice application here? Even if we assume big results from elsewhere, need to show some sort of application of the blowup formula.
+\section{Application to elliptic surfaces}
+
+
+
+
+
+\bibliographystyle{amsalpha}
+\bibliography{ref}
 \end{document}
